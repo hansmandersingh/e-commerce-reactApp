@@ -28,7 +28,9 @@ export default class App extends React.Component {
   };
 
   removeFromCart = (item) => {
-    console.log(item)
+    this.setState(prevState => ({
+      cartItems: [...prevState.cartItems].filter(fillItem => item.cartItemsId !== fillItem.cartItemsId)
+    }))
   }
 
   render() {
