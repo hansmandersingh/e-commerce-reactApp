@@ -9,7 +9,7 @@ export default function Item(props) {
       <div className="description">
         {props.item.description}
       </div>
-      <button>Add to Cart</button>
+      <button onClick={() => {props.addToCart(props.item)}}>Add to Cart</button>
     </li>
   );
 }
