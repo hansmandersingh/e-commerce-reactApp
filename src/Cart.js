@@ -3,6 +3,7 @@ import CartItem from "./CartItem";
 
 export default function Cart(props) {
   let hidden;
+  
   if (props.cartItems.length === 0) {
     hidden = "total hide";
   } else {
