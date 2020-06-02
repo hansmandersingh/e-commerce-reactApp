@@ -2,13 +2,16 @@ import React from "react";
 import "./App.css";
 import Item from "./Item";
 import Cart from "./Cart";
+let totalOfAll = 0;
 
 export default class App extends React.Component {
   cartItemsId = 0;
+  
 
   state = {
     allItems: [],
     cartItems: [],
+    total: 0,
   };
 
   componentDidMount = () => {
@@ -24,13 +27,23 @@ export default class App extends React.Component {
 
     this.setState((prevState) => ({
       cartItems: [...prevState.cartItems, {...item, cartItemsId: this.cartItemsId}],
-    }));
+    }), () => this.totalAdd(item));
   };
 
   removeFromCart = (item) => {
     this.setState(prevState => ({
       cartItems: [...prevState.cartItems].filter(fillItem => item.cartItemsId !== fillItem.cartItemsId)
-    }))
+    }), () => this.totalSub(item));
+  }
+
+  totalAdd = (item) => {
+    totalOfAll += item.price;
+    this.setState({total: totalOfAll});
+  }
+
+  totalSub = (item) => {
+    totalOfAll -= item.price
+    this.setState({total: totalOfAll});
   }
 
   render() {
@@ -45,7 +58,7 @@ export default class App extends React.Component {
               <Item key={item.id} item={item} addToCart={this.addToCart}/>
             ))}
           </ul>
-          <Cart cartItems={this.state.cartItems} cartItemsId={this.cartItemsId} removeFromCart={this.removeFromCart}/>
+          <Cart cartItems={this.state.cartItems} cartItemsId={this.cartItemsId} removeFromCart={this.removeFromCart} total={this.state.total}/>
         </main>
       </>
     );
