@@ -4,6 +4,8 @@ import Item from "./Item";
 import Cart from "./Cart";
 
 export default class App extends React.Component {
+  cartItemsId = 0;
+
   state = {
     allItems: [],
     cartItems: [],
@@ -18,10 +20,16 @@ export default class App extends React.Component {
   };
 
   addToCart = (item) => {
+    this.cartItemsId++;
+
     this.setState((prevState) => ({
-      cartItems: [...prevState.cartItems, item],
+      cartItems: [...prevState.cartItems, {...item, cartItemsId: this.cartItemsId}],
     }));
   };
+
+  removeFromCart = (item) => {
+    console.log(item)
+  }
 
   render() {
     return (
@@ -32,18 +40,10 @@ export default class App extends React.Component {
         <main>
           <ul className="items">
             {this.state.allItems.map((item) => (
-              <Item key={item.id} item={item} addToCart={this.addToCart} />
+              <Item key={item.id} item={item} addToCart={this.addToCart}/>
             ))}
           </ul>
-          <aside className="cart">
-            <h2>Your Cart</h2>
-            <ul>
-              {this.state.cartItems.map(item => (
-                <Cart key={item.id} item={item}/>
-              ))}
-            </ul>
-            <div className="total">Total: $309.97</div>
-          </aside>
+          <Cart cartItems={this.state.cartItems} cartItemsId={this.cartItemsId} removeFromCart={this.removeFromCart}/>
         </main>
       </>
     );
